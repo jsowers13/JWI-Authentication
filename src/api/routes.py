@@ -4,8 +4,20 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
+app = Flask(__name__)
+
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+
+jwt = JWTManager(app)
 
 api = Blueprint('api', __name__)
+
+
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -16,3 +28,23 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route('/login', methods=['POST'])
+def login():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    print(username, password)
+    secret_key = "aoiwdfnoainfasni"
+    # access_token = create_access_token(identity=username)
+    return jsonify(access_token=secret_key)
+
+@api.route('/private', methods=['POST'])
+def private():
+    secret_key = "aoiwdfnoainfasni"
+    authentication = request.headers.get("authentication")
+
+    if authentication == "":
+        return jsonify("You are not logged in")
+    elif authentication == secret_key:
+        return jsonify("You are logged in")
+    
