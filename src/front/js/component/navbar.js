@@ -1,19 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { Component, useContext } from "react";
+import { Context } from "../store/appContext";
+import { Navbar } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { SignOut } from "./signout";
 
-export const Navbar = () => {
+export const NavBar = () => {
+	const { store } = useContext(Context);
+	const history = useHistory();
+
+	const handleLogOut = () => {
+		sessionStorage.clear();
+		history.push("/");
+		location.reload();
+	};
+
 	return (
-		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
-				</div>
-			</div>
-		</nav>
+		<Navbar variant="light" bg="light" expand="lg">
+			<Container fluid>
+				<Navbar.Brand href="/">
+					<i className="fas fa-cocktail" />
+				</Navbar.Brand>
+
+				<Nav className="justify-content-center" activeKey="/home">
+					{!store.activeUser ? (
+
+						<Nav.Item className="loginTab pr-3">
+							<Nav.Link href="/login">Log In</Nav.Link>
+						</Nav.Item>
+
+
+					) : (
+
+
+
+						<Nav.Item>
+							<Nav.Link onClick={() => handleLogOut()}>Sign Out</Nav.Link>
+						</Nav.Item>
+
+					)}
+				</Nav>
+			</Container>
+		</Navbar>
 	);
 };

@@ -6,11 +6,12 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import { Signup } from "./component/signup";
-import { Login } from "./component/login";
+import { Login } from "./pages/login";
 import { Private } from "./component/private";
+import { Register } from "./pages/signup";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { NavBar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
 //create your first component
@@ -23,7 +24,7 @@ const Layout = () => {
     <div>
       <BrowserRouter basename={basename}>
         <ScrollToTop>
-          <Navbar />
+          <NavBar />
           <Switch>
             <Route exact path="/">
               <Home />
@@ -35,7 +36,7 @@ const Layout = () => {
               <Single />
             </Route>
             <Route exact path="/signup">
-              <Signup />
+              <Register />
             </Route>
             <Route exact path="/login">
               <Login />
